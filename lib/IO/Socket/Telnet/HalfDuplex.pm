@@ -4,9 +4,9 @@ use base 'IO::Socket::Telnet';
 sub new {
     my $class = shift;
     my %args = @_;
-    my $code = delete $args{code} || 99;
+    my $ping = delete $args{ping_option} || 99;
     my $self = $class->SUPER::new(@_);
-    ${*{$self}}{code} = $code;
+    ${*{$self}}{ping_option} = $ping;
     $self->IO::Socket::Telnet::telnet_simple_callback(\&telnet_negotiation);
     return $self;
 }
@@ -21,7 +21,7 @@ sub read {
     my $self = shift;
     my $buffer;
 
-    $self->do(chr(${*{$self}}{code}));
+    $self->do(chr(${*{$self}}{ping_option}));
     ${*{$self}}{got_pong} = 0;
 
     eval {
@@ -48,8 +48,8 @@ sub telnet_negotiation {
     my $option = shift;
 
     my $external_callback = ${*{$self}}{halfduplex_simple_cb};
-    my $code = ${*{$self}}{code};
-    if ($option =~ / $code$/) {
+    my $ping = ${*{$self}}{ping_option};
+    if ($option =~ / $ping$/) {
         ${*{$self}}{got_pong} = 1;
         return '' unless $external_callback;
         return $self->$external_callback($option);
