@@ -59,7 +59,8 @@ my $client = IO::Socket::Telnet::HalfDuplex->new(
 $client->telnet_simple_callback(sub {
     my $self = shift;
     my ($msg) = @_;
-    $pong++ if $msg =~ /99$/;
+    my $ping = ord($PONG);
+    $pong++ if $msg =~ /$ping$/;
     return '';
 });
 $client->send('blah');
