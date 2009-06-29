@@ -7,8 +7,14 @@ sub new {
     my $code = delete $args{code} || 99;
     my $self = $class->SUPER::new(@_);
     ${*{$self}}{code} = $code;
-    $self->telnet_simple_callback(\&telnet_negotiation);
+    $self->IO::Socket::Telnet::telnet_simple_callback(\&telnet_negotiation);
     return $self;
+}
+
+sub telnet_simple_callback {
+    my $self = shift;
+    ${*$self}{halfduplex_simple_cb} = $_[0] if @_;
+    ${*$self}{halfduplex_simple_cb};
 }
 
 sub read {
@@ -41,13 +47,16 @@ sub telnet_negotiation {
     my $self = shift;
     my $option = shift;
 
+    my $external_callback = ${*{$self}}{halfduplex_simple_cb};
     my $code = ${*{$self}}{code};
     if ($option =~ / $code$/) {
         ${*{$self}}{got_pong} = 1;
-        return '';
+        return '' unless $external_callback;
+        return $self->$external_callback($option);
     }
 
-    return;
+    return unless $external_callback;
+    return $self->$external_callback($option);
 }
 
 1;
