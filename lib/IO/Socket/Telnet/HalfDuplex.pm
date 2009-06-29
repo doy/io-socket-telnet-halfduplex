@@ -9,7 +9,7 @@ sub new {
     my $ping = delete $args{ping_option} || 99;
     my $self = $class->SUPER::new(@_);
     ${*{$self}}{ping_option} = $ping;
-    $self->IO::Socket::Telnet::telnet_simple_callback(\&telnet_negotiation);
+    $self->IO::Socket::Telnet::telnet_simple_callback(\&_telnet_negotiation);
     return $self;
 }
 
@@ -45,7 +45,7 @@ sub read {
     return $buffer;
 }
 
-sub telnet_negotiation {
+sub _telnet_negotiation {
     my $self = shift;
     my $option = shift;
 
