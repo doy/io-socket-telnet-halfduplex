@@ -3,6 +3,24 @@ use warnings;
 package IO::Socket::Telnet::HalfDuplex;
 use base 'IO::Socket::Telnet';
 
+=head1 NAME
+
+
+=head1 SYNOPSIS
+
+
+=head1 DESCRIPTION
+
+
+=cut
+
+=head1 CONSTRUCTOR
+
+=head2 new(PARAMHASH)
+
+
+=cut
+
 sub new {
     my $class = shift;
     my %args = @_;
@@ -18,6 +36,15 @@ sub telnet_simple_callback {
     ${*$self}{halfduplex_simple_cb} = $_[0] if @_;
     ${*$self}{halfduplex_simple_cb};
 }
+
+=head1 METHODS
+
+=cut
+
+=head2 read()
+
+
+=cut
 
 sub read {
     my $self = shift;
@@ -60,5 +87,60 @@ sub _telnet_negotiation {
     return unless $external_callback;
     return $self->$external_callback($option);
 }
+
+=head1 BUGS
+
+No known bugs.
+
+Please report any bugs through RT: email
+C<bug-io-socket-telnet-halfduplex at rt.cpan.org>, or browse to
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=IO-Socket-Telnet-HalfDuplex>.
+
+=head1 TODO
+
+
+=head1 SEE ALSO
+
+
+=head1 SUPPORT
+
+You can find this documentation for this module with the perldoc command.
+
+    perldoc IO::Socket::Telnet::HalfDuplex
+
+You can also look for information at:
+
+=over 4
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/IO-Socket-Telnet-HalfDuplex>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/IO-Socket-Telnet-HalfDuplex>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=IO-Socket-Telnet-HalfDuplex>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/IO-Socket-Telnet-HalfDuplex>
+
+=back
+
+=head1 AUTHOR
+
+  Jesse Luehrs <doy at tozt dot net>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2009 by Jesse Luehrs.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as perl itself.
+
+=cut
 
 1;
