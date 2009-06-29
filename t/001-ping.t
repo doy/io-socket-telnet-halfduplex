@@ -5,6 +5,12 @@ use Test::More tests => 4;
 
 use IO::Socket::Telnet::HalfDuplex;
 
+# this simulates ideal conditions - the server doesn't respond with a pong
+# until all data it wanted to respond to the actual request with has been
+# sent. real situations aren't always this nice, since typically the telnet
+# layer is separate from the layer that's deciding how to respond to the
+# received data, but this is a decent approximation.
+
 pipe my $read, my $write;
 
 my $IAC = chr(255);
@@ -26,6 +32,7 @@ unless ($pid = fork) {
     my $buf;
     my $tested = 0;
     while (defined $connection->recv($buf, 4096)) {
+        # read of 0 bytes means that the socket is closed
         last unless defined $buf && length $buf;
         my $gotpong = ($buf =~ s/$IAC$DO$PONG//);
         if (!$tested) {
@@ -42,6 +49,7 @@ unless ($pid = fork) {
     close $write;
     exit;
 }
+# give the server time to set up
 sleep 1;
 my $pong = 0;
 my $client = IO::Socket::Telnet::HalfDuplex->new(
@@ -50,7 +58,7 @@ my $client = IO::Socket::Telnet::HalfDuplex->new(
 );
 $client->telnet_simple_callback(sub {
     my $self = shift;
-    my $msg = shift;
+    my ($msg) = @_;
     $pong++ if $msg =~ /99$/;
     return '';
 });
