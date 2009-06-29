@@ -1,3 +1,5 @@
+use strict;
+use warnings;
 package IO::Socket::Telnet::HalfDuplex;
 use base 'IO::Socket::Telnet';
 
