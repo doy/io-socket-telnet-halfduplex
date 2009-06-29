@@ -5,6 +5,7 @@ use base 'IO::Socket::Telnet';
 
 =head1 NAME
 
+IO::Socket::Telnet::HalfDuplex - more reliable telnet communication
 
 =head1 SYNOPSIS
 
@@ -96,11 +97,11 @@ Please report any bugs through RT: email
 C<bug-io-socket-telnet-halfduplex at rt.cpan.org>, or browse to
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=IO-Socket-Telnet-HalfDuplex>.
 
-=head1 TODO
-
-
 =head1 SEE ALSO
 
+L<IO::Socket::Telnet>, L<IO::Socket::INET>, L<IO::Socket>, L<IO::Handle>
+
+L<http://www.ietf.org/rfc/rfc854.txt>
 
 =head1 SUPPORT
 
