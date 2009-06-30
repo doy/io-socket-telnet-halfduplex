@@ -51,7 +51,7 @@ my $pong = 0;
 my $client = IO::Socket::Telnet::HalfDuplex->new(
     PeerAddr => '127.0.0.1',
     PeerPort => $localport,
-    ping_option => ord($PONG),
+    PingOption => ord($PONG),
 );
 $client->telnet_simple_callback(sub {
     my $self = shift;

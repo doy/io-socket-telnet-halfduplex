@@ -25,7 +25,7 @@ IO::Socket::Telnet::HalfDuplex - more reliable telnet communication
 sub new {
     my $class = shift;
     my %args = @_;
-    my $ping = delete $args{ping_option} || 99;
+    my $ping = delete $args{PingOption} || 99;
     my $self = $class->SUPER::new(@_);
     ${*{$self}}{ping_option} = $ping;
     $self->IO::Socket::Telnet::telnet_simple_callback(\&_telnet_negotiation);
