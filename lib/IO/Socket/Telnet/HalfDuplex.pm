@@ -55,8 +55,8 @@ L<IO::Socket::Telnet>.
 =head2 new(PARAMHASH)
 
 The constructor takes mostly the same arguments as L<IO::Socket::INET>, but
-also accepts the key C<PingOption>, which takes an integer from 0-255 to use
-for the ping/pong mechanism. This defaults to 99 if not specified.
+also accepts the key C<PingOption>, which takes an integer between 40 and 239
+to use for the ping/pong mechanism. This defaults to 99 if not specified.
 
 =cut
 
@@ -64,6 +64,7 @@ sub new {
     my $class = shift;
     my %args = @_;
     my $ping = delete $args{PingOption} || 99;
+    die "Invalid option: $ping (must be 40-239)" if $ping < 40 || $ping >= 240;
     my $self = $class->SUPER::new(@_);
     ${*{$self}}{ping_option} = $ping;
     $self->IO::Socket::Telnet::telnet_simple_callback(\&_telnet_negotiation);
