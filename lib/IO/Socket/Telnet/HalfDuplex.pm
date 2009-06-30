@@ -9,6 +9,12 @@ IO::Socket::Telnet::HalfDuplex - more reliable telnet communication
 
 =head1 SYNOPSIS
 
+  use IO::Socket::Telnet::HalfDuplex;
+  my $socket = IO::Socket::Telnet::HalfDuplex->new(PeerAddr => 'localhost');
+  while (1) {
+      $socket->send(scalar <>);
+      print $socket->read;
+  }
 
 =head1 DESCRIPTION
 
@@ -19,6 +25,9 @@ IO::Socket::Telnet::HalfDuplex - more reliable telnet communication
 
 =head2 new(PARAMHASH)
 
+The constructor takes mostly the same arguments as L<IO::Socket::INET>, but
+also accepts the key C<PingOption>, which takes an integer from 0-255 to use
+for the ping/pong mechanism. This defaults to 99 if not specified.
 
 =cut
 
@@ -44,6 +53,7 @@ sub telnet_simple_callback {
 
 =head2 read()
 
+Performs a (hopefully) full read on the socket. Returns the data read. Throws an exception if the connection ends before all data is read.
 
 =cut
 
