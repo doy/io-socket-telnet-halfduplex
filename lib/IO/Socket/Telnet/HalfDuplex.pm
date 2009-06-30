@@ -150,6 +150,10 @@ L<IO::Socket::Telnet>, L<IO::Socket::INET>, L<IO::Socket>, L<IO::Handle>
 
 L<http://www.ietf.org/rfc/rfc854.txt>
 
+=head1 CREDITS
+
+This algorithm (and most of the implementation) is due to Shawn Moore (L<http://search.cpan.org/~sartak/>) for projects such as L<TAEB> and L<http://interhack.us>.
+
 =head1 SUPPORT
 
 You can find this documentation for this module with the perldoc command.
