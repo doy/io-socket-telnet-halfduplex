@@ -1,7 +1,8 @@
+package IO::Socket::Telnet::HalfDuplex;
 use strict;
 use warnings;
-package IO::Socket::Telnet::HalfDuplex;
 use base 'IO::Socket::Telnet';
+use Try::Tiny;
 
 =head1 NAME
 
@@ -94,7 +95,7 @@ sub read {
     $self->do(chr(${*{$self}}{ping_option}));
     ${*{$self}}{got_pong} = 0;
 
-    eval {
+    try {
         local $SIG{__DIE__};
 
         while (1) {
@@ -106,9 +107,10 @@ sub read {
             };
             die "Disconnected from server: $!" unless $!{EINTR};
         }
+    }
+    catch {
+        die $_ if $_ !~ /^got pong\n/;
     };
-
-    die $@ if $@ !~ /^got pong\n/;
 
     return $buffer;
 }
